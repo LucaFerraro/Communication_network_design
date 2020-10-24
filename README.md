@@ -1,3 +1,3 @@
-# Communication_network_design
+# Communication network design tasks
 
- ## Tasks by: Luca Ferraro (10748116) and Bernardo Camajori Tedeschini (10584438)
+ ## By Luca Ferraro (10748116) and Bernardo Camajori Tedeschini (10584438)
