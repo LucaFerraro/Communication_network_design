@@ -62,6 +62,8 @@ public class SplittableFlowFormulation implements IAlgorithm
 
 
 	final DoubleMatrix2D x_lkc = op.getPrimalSolution("x_lkc").view2D();
+	System.out.println(x_lkc);
+	
 	netPlan.setRoutingFromDemandLinkCarriedTraffic(x_lkc , false , false, null);
 	//Set<Demand> demands = new HashSet<Demand>(netPlan.getDemands());
 	//netPlan.setRoutingFromDemandLinkCarriedTraffic(x_lkc , true , false, demands, netPlan.getNetworkLayerDefault());

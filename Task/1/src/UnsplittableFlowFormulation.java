@@ -15,6 +15,7 @@ import com.net2plan.interfaces.networkDesign.Node;
 import com.net2plan.utils.Constants.RoutingType;
 import com.net2plan.utils.Triple;
 
+import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.DoubleMatrix2D;
 
 public class UnsplittableFlowFormulation implements IAlgorithm
@@ -28,9 +29,9 @@ public class UnsplittableFlowFormulation implements IAlgorithm
 	final int D = netPlan.getNumberOfDemands();
 	final int E = netPlan.getNumberOfLinks ();
 	
-	op.setInputParameter("v_c", new DoubleMatrixND(new int [] { D } , netPlan.getVectorDemandOfferedTraffic()));
-	op.addDecisionVariable("x_lkc" , false , new int [] {D , E } , 0 , 1);
-	op.setObjectiveFunction("minimize" , "sum (v_c(all) * x_lkc(all,all))");
+	op.setInputParameter("v_C", new DoubleMatrixND(new int [] { D } , netPlan.getVectorDemandOfferedTraffic()));
+	op.addDecisionVariable("x_lkc" , true , new int [] {D , E } , 0 , 1);
+	op.setObjectiveFunction("minimize" , "sum (v_C(all) * x_lkc(all,all))");
 
 	// Add the solenoidality constraints
 	for (Node n : netPlan.getNodes ())
@@ -55,13 +56,12 @@ public class UnsplittableFlowFormulation implements IAlgorithm
 		op.setInputParameter("lk" , lk.getIndex ());
 		op.setInputParameter("linkCapacity" , lk.getCapacity ());
 		
-		//op.setInputParameter ("v_c" , netPlan.getDemands ());
-		//op.setInputParameter ("IncomingLinks" , NetPlan.getIndexes (n.getIncomingLinks()) , "row");
-		//op.setInputParameter("v_c", new DoubleMatrixND(new int [] { D } , "random"));
+
 		op.setInputParameter("v_c", new DoubleMatrixND(new int [] { D } , netPlan.getVectorDemandOfferedTraffic()));
-		//new DoubleMatrix1D h_d = netPlan.getVectorDemandOfferedTraffic();
-		//System.out.format("%d", op.setInputParameter("v_c", new DoubleMatrixND(new int [] { D } , netPlan.getVectorDemandOfferedTraffic())););
 		
+		//final DoubleMatrix1D v_c2 = netPlan.getVectorDemandOfferedTraffic();
+		//System.out.println(v_c2);
+
 		op.addConstraint ("sum(v_c(all) * x_lkc(all, lk)) <= linkCapacity");
 	}
 
@@ -74,6 +74,8 @@ public class UnsplittableFlowFormulation implements IAlgorithm
 
 
 	final DoubleMatrix2D x_lkc = op.getPrimalSolution("x_lkc").view2D();
+	System.out.println(x_lkc);
+			
 	//netPlan.setRoutingFromDemandLinkCarriedTraffic(x_lkc , false , false, null);
 	Set<Demand> demands = new HashSet<Demand>(netPlan.getDemands());
 	netPlan.setRoutingFromDemandLinkCarriedTraffic(x_lkc , true , false, demands, netPlan.getNetworkLayerDefault());
