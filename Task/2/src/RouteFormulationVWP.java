@@ -84,10 +84,18 @@ public class RouteFormulationVWP implements IAlgorithm
 
 		final double [] r_cn = op.getPrimalSolution("r_cn").to1DArray();
 		
+		// ADDED
+		System.out.println(netPlan.getVectorRouteNumberOfLinks());
+		System.out.println(netPlan.getNumberOfDemands());
+		
 		for (Route r : netPlan.getRoutes())
 		{
 			final double h_p = r.getDemand().getOfferedTraffic();
 			r.setCarriedTraffic(r_cn [r.getIndex ()] ,  r_cn [r.getIndex ()]);
+			
+			// ADDED
+			System.out.println("cn: "+ r.getIndex ()+ ", " + r_cn[r.getIndex ()]);
+
 		}
 		netPlan.removeAllRoutesUnused(0.001);
 		

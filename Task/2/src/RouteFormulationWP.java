@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jom.DoubleMatrixND;
 import com.jom.OptimizationProblem;
 import com.net2plan.interfaces.networkDesign.Demand;
 import com.net2plan.interfaces.networkDesign.IAlgorithm;
@@ -64,10 +65,40 @@ public class RouteFormulationWP implements IAlgorithm
 		
 		/* Set the objective function */
 		op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
+		//op.setInputParameter("l_p", new DoubleMatrixND(new int [] { D , netPlan.getNumberOfRoutes (), W } , , ));
+		//op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
+		
+		
+		
 		// OBJECTIVE FUNCTION MISSING (2)
 		//  Size left matrix: [1, 138]. Size right matrix: [42, 138, 10]  <-> sum (l_p*r_cnw)
 		//op.setObjectiveFunction("minimize" , "sum (l_p*sum(sum(r_cnw,1),2))"); 
-		op.setObjectiveFunction("minimize" , "sum (l_p.*sum(sum(r_cnw,3),1))"); 
+		//op.setObjectiveFunction("minimize" , "  sum(sum(sum(l_p*r_cnw(c,all,w),2),1),1)"); 
+		//op.setObjectiveFunction("maximize" , "sum (r_cnw(all))"); 
+		//op.setObjectiveFunction("minimize" , "sum (r_cnw(0,0,0))"); 
+		
+		
+		//System.out.println (op.parseExpression("[l_p(0,[all])]").evaluate());
+		//System.out.println (op.parseExpression("l_p[0;0;0][all]").evaluate());
+		System.out.println (op.parseExpression("l_p(all, all)").evaluate());
+		
+		
+		for (Demand d : netPlan.getDemands ()) {
+			for(int w=0;w<W;w++) {
+				for (int n=0;n< netPlan.getVectorRouteNumberOfLinks().length() ;n++) {
+				
+					op.setInputParameter ("c" , d.getIndex ());
+					op.setInputParameter ("w" , w);
+					
+					//op.setObjectiveFunction("minimize" , "sum(sum(l_p*r_cnw(c,all,w),2))");
+					op.setObjectiveFunction("minimize" , "  sum(sum(sum(l_p*r_cnw(c,all,w),2),1),1)"); 
+				}
+			}
+		}
+		
+		
+		
+		//op.setObjectiveFunction("minimize" , "sum (l_p.*sum(sum(r_cnw,3),1))"); 
 		//op.setObjectiveFunction("minimize" , "sum (sum(l_p*r_cnw),3)"); 
 		// sum(over w (sum(over c (sum(over n of P_n * r_cnw)))
 		
@@ -114,6 +145,9 @@ public class RouteFormulationWP implements IAlgorithm
 		// ADDED
 		final DoubleMatrix2D v_cw = op.getPrimalSolution("v_cw").view2D();
 		System.out.println(v_cw);
+		
+		// ADDED
+		System.out.println(netPlan.getVectorRouteNumberOfLinks());
 		
 		for (Route r : netPlan.getRoutes())
 		{
