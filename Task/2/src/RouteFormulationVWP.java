@@ -95,8 +95,8 @@ public class RouteFormulationVWP implements IAlgorithm
 		return "Ok! Total number of wavelengths used in the links: " + op.getOptimalCost(); 
 	}
 
-	/** Returns a description message that will be shown in the graphical user interface */
-	
+	/** Returns a description message that will be shown in the graphical user interface
+	 */
 	@Override
 	public String getDescription()
 	{
@@ -111,7 +111,7 @@ public class RouteFormulationVWP implements IAlgorithm
 	public List<Triple<String, String, String>> getParameters()
 	{
 		final List<Triple<String, String, String>> param = new LinkedList<Triple<String, String, String>> ();
-		param.add (Triple.of ("k" , "10" , "Maximum number of loopless admissible paths per demand"));
+		param.add (Triple.of ("k" , "2" , "Maximum number of loopless admissible paths per demand"));
 		param.add (Triple.of ("isNonBifurcated" , "false" , "True if the traffic is constrained to be non-bifurcated"));
 		return param;
 	}

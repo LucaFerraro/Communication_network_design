@@ -13,6 +13,9 @@ import com.net2plan.interfaces.networkDesign.Route;
 import com.net2plan.libraries.GraphUtils;
 import com.net2plan.libraries.WDMUtils;
 import com.net2plan.utils.Constants.RoutingType;
+
+import cern.colt.matrix.tdouble.DoubleMatrix2D;
+
 import com.net2plan.utils.Triple;
 
 public class RouteFormulationWP implements IAlgorithm
@@ -30,7 +33,8 @@ public class RouteFormulationWP implements IAlgorithm
 		/* The link capacity input parameter is the capacity of the two links in the three node design */
 		final int k = Integer.parseInt (algorithmParameters.get ("k")); // if you expect a Double, you have to make the conversion
 		final boolean isNonBifurcated = Boolean.parseBoolean(algorithmParameters.get ("isNonBifurcated"));
-		final int W = 10;
+		//final int W = 10;
+		final int W = Integer.parseInt (algorithmParameters.get ("W"));
 		
 		final int D = netPlan.getNumberOfDemands();
 
@@ -55,10 +59,18 @@ public class RouteFormulationWP implements IAlgorithm
 		/* add the vector of decision variables */
 		/* i-th coordinate in decision variables array, corresponds to the route of index i in the netPlan object */
 		op.addDecisionVariable("r_cnw" , isNonBifurcated , new int [] {D , netPlan.getNumberOfRoutes (),W } , 0 , Double.MAX_VALUE);  // fraction between 0 and 1
-		op.addDecisionVariable("VARIABLE NAME MISSING (1)",false,new int[] {D,W},0,Double.MAX_VALUE);
+		// MISSING (1)
+		op.addDecisionVariable("v_cw",false,new int[] {D,W},0,Double.MAX_VALUE);
 		
 		/* Set the objective function */
-		//// OBJECTIVE FUNCTION MISSING (2)
+		op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
+		// OBJECTIVE FUNCTION MISSING (2)
+		//  Size left matrix: [1, 138]. Size right matrix: [42, 138, 10]  <-> sum (l_p*r_cnw)
+		//op.setObjectiveFunction("minimize" , "sum (l_p*sum(sum(r_cnw,1),2))"); 
+		op.setObjectiveFunction("minimize" , "sum (l_p.*sum(sum(r_cnw,3),1))"); 
+		//op.setObjectiveFunction("minimize" , "sum (sum(l_p*r_cnw),3)"); 
+		// sum(over w (sum(over c (sum(over n of P_n * r_cnw)))
+		
 		
 		/* Add the flow satisfaction constraints (all the traffic is carried) */
 		for (Demand d : netPlan.getDemands ())
@@ -67,10 +79,12 @@ public class RouteFormulationWP implements IAlgorithm
 			op.setInputParameter("V_c" , d.getOfferedTraffic());
 			op.setInputParameter ("c" , d.getIndex ());
 			for(int w=0;w<W;w++) {
+			    //// CONSTRAINT MISSING (3)
 				op.setInputParameter("w" , w);
-				//// CONSTRAINT MISSING (3)
+				op.addConstraint ("sum(r_cnw( c, all, w)) == v_cw(c,w)");
 			}
-			//// CONSTRAINT MISSING (4)
+		    //// CONSTRAINT MISSING (4)
+			op.addConstraint ("sum(v_cw(c,all)) == V_c");
 		}
 
 		/* Add the link capacity constraints (all links carry less or equal traffic than its capacity) */
@@ -78,7 +92,14 @@ public class RouteFormulationWP implements IAlgorithm
 		{
 			op.setInputParameter("R_lk" , NetPlan.getIndexes(e.getTraversingRoutes()) , "row");
 			op.setInputParameter("linkcapacity" , e.getCapacity());
-			//// CAPACITY CONSTRAINT MISSING (5)			
+		    //// CAPACITY CONSTRAINT MISSING (5)
+			for(int w=0;w<W;w++) {
+				op.setInputParameter("w" , w);
+				
+				//op.setInputParameter("W" , W);
+				//op.addConstraint ("sum(r_cnw( all, R_lk, w)) <= linkcapacity/W");	
+				op.addConstraint ("sum(r_cnw( all, R_lk, w)) <= linkcapacity");
+			}	
 		}
 
 		/* call the solver to solve the problem */
@@ -90,6 +111,10 @@ public class RouteFormulationWP implements IAlgorithm
 
 		final double [][][] r_cnw = op.getPrimalSolution("r_cnw").to3DArray(); //turn into array with index: c,n,w
 		
+		// ADDED
+		final DoubleMatrix2D v_cw = op.getPrimalSolution("v_cw").view2D();
+		System.out.println(v_cw);
+		
 		for (Route r : netPlan.getRoutes())
 		{
 			int index=r.getIndex();
@@ -98,6 +123,12 @@ public class RouteFormulationWP implements IAlgorithm
 			for(Demand d : netPlan.getDemands ())
 				for(int w=0;w<W;w++) {
 				traffic=traffic+r_cnw[d.getIndex()][index][w];
+				
+				// ADDED
+				if (r_cnw[d.getIndex()][index][w] > 0) {
+					System.out.println( "c: " + (d.getIndex()) +", n: "+index+", w: "+ w +", " + r_cnw[d.getIndex()][index][w]);
+				}
+				
 			}
 			r.setCarriedTraffic(traffic,traffic);	//insert traffic summing all demands in all wavelengths for that route
 		}
@@ -124,6 +155,7 @@ public class RouteFormulationWP implements IAlgorithm
 	{
 		final List<Triple<String, String, String>> param = new LinkedList<Triple<String, String, String>> ();
 		param.add (Triple.of ("k" , "10" , "Maximum number of loopless admissible paths per demand"));
+		param.add (Triple.of ("W" , "10" , "Number of wavelenghts per fiber"));
 		param.add (Triple.of ("isNonBifurcated" , "false" , "True if the traffic is constrained to be non-bifurcated"));
 		return param;
 	}
