@@ -119,7 +119,7 @@ public class RouteFormulationVWP implements IAlgorithm
 	public List<Triple<String, String, String>> getParameters()
 	{
 		final List<Triple<String, String, String>> param = new LinkedList<Triple<String, String, String>> ();
-		param.add (Triple.of ("k" , "2" , "Maximum number of loopless admissible paths per demand"));
+		param.add (Triple.of ("k" , "10" , "Maximum number of loopless admissible paths per demand"));
 		param.add (Triple.of ("isNonBifurcated" , "false" , "True if the traffic is constrained to be non-bifurcated"));
 		return param;
 	}

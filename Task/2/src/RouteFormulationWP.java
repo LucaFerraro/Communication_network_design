@@ -15,6 +15,8 @@ import com.net2plan.libraries.GraphUtils;
 import com.net2plan.libraries.WDMUtils;
 import com.net2plan.utils.Constants.RoutingType;
 
+import cern.colt.function.tdouble.DoubleFunction;
+import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.DoubleMatrix2D;
 
 import com.net2plan.utils.Triple;
@@ -64,37 +66,48 @@ public class RouteFormulationWP implements IAlgorithm
 		op.addDecisionVariable("v_cw",false,new int[] {D,W},0,Double.MAX_VALUE);
 		
 		/* Set the objective function */
-		op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
-		//op.setInputParameter("l_p", new DoubleMatrixND(new int [] { D , netPlan.getNumberOfRoutes (), W } , , ));
 		//op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
+		//op.setInputParameter("l_p", new DoubleMatrixND(new int [] { 1 , netPlan.getNumberOfRoutes (), 1 } , netPlan.getVectorRouteNumberOfLinks() ));
+		op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
 		
+		// ADDED
+		//final DoubleMatrixND l_p = new DoubleMatrixND(new int [] { 1 , netPlan.getNumberOfRoutes () }, netPlan.getVectorRouteNumberOfLinks()  );
+		//l_p.assign((DoubleFunction) netPlan.getVectorRouteNumberOfLinks());
+		//final DoubleMatrix1D l_p = netPlan.getVectorRouteNumberOfLinks();
+		//l_p.reshape(1, netPlan.getNumberOfRoutes (), 1);
+		//op.setInputParameter("l_p" , l_p);	
+		//System.out.println (op.parseExpression("l_p(0,2,0)").evaluate());
 		
 		
 		// OBJECTIVE FUNCTION MISSING (2)
 		//  Size left matrix: [1, 138]. Size right matrix: [42, 138, 10]  <-> sum (l_p*r_cnw)
 		//op.setObjectiveFunction("minimize" , "sum (l_p*sum(sum(r_cnw,1),2))"); 
-		//op.setObjectiveFunction("minimize" , "  sum(sum(sum(l_p*r_cnw(c,all,w),2),1),1)"); 
-		//op.setObjectiveFunction("maximize" , "sum (r_cnw(all))"); 
-		//op.setObjectiveFunction("minimize" , "sum (r_cnw(0,0,0))"); 
+		
+		//op.setObjectiveFunction("minimize" , "  sum(r_cnw)"); 
+		//op.setObjectiveFunction("minimize" , "sum(sum (l_p*permute(r_cnw,[2;1;3]),2),2)"); 
+		op.setObjectiveFunction("minimize" , "sum (l_p*permute(r_cnw,[2;1;3]))"); 
 		
 		
 		//System.out.println (op.parseExpression("[l_p(0,[all])]").evaluate());
 		//System.out.println (op.parseExpression("l_p[0;0;0][all]").evaluate());
-		System.out.println (op.parseExpression("l_p(all, all)").evaluate());
+		//System.out.println (op.parseExpression("l_p(all, all)").evaluate());
 		
-		
+		/*
 		for (Demand d : netPlan.getDemands ()) {
 			for(int w=0;w<W;w++) {
-				for (int n=0;n< netPlan.getVectorRouteNumberOfLinks().length() ;n++) {
+				for (int n=0; n < netPlan.getNumberOfRoutes () ; n++) {
 				
 					op.setInputParameter ("c" , d.getIndex ());
 					op.setInputParameter ("w" , w);
+					op.setInputParameter ("n" , n);
 					
-					//op.setObjectiveFunction("minimize" , "sum(sum(l_p*r_cnw(c,all,w),2))");
-					op.setObjectiveFunction("minimize" , "  sum(sum(sum(l_p*r_cnw(c,all,w),2),1),1)"); 
+					op.setObjectiveFunction("minimize" , "l_p(n)*r_cnw(c,n,w)");
+
 				}
 			}
 		}
+		*/
+		
 		
 		
 		
@@ -154,15 +167,16 @@ public class RouteFormulationWP implements IAlgorithm
 			int index=r.getIndex();
 			double traffic=0;
 			
-			for(Demand d : netPlan.getDemands ())
+			for(Demand d : netPlan.getDemands ()) {
 				for(int w=0;w<W;w++) {
-				traffic=traffic+r_cnw[d.getIndex()][index][w];
-				
-				// ADDED
-				if (r_cnw[d.getIndex()][index][w] > 0) {
-					System.out.println( "c: " + (d.getIndex()) +", n: "+index+", w: "+ w +", " + r_cnw[d.getIndex()][index][w]);
+					traffic=traffic+r_cnw[d.getIndex()][index][w];
+					
+					// ADDED
+					if (r_cnw[d.getIndex()][index][w] > 0) {
+						System.out.println( "n: "+index+", c: " + (d.getIndex()) +", w: "+ w +", " + r_cnw[d.getIndex()][index][w]);
+					}
+					
 				}
-				
 			}
 			r.setCarriedTraffic(traffic,traffic);	//insert traffic summing all demands in all wavelengths for that route
 		}

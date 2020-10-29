@@ -4,13 +4,16 @@ import matplotlib.pyplot as plt
 
 
 k = [2:10]
-C            = [    10,   15, 20, 25]
-C_VWP        = [ 99999,99999,228,228]
-C_WP         = [                 126]
+C            = [   10,    15,    20, 25]
+C_VWP        = [99999, 99999,   228,228]
+C_WP         = [                320,304]   # MANY OBJ FUNC
+C_WP_2       = [         228,   320,304]   # min(sum(r_ncw))
 
-C_Splittable = [                 228]  # OPTIMUM
+C_Splittable = [99999,174.13,155.51,228]  # OPTIMUM
 
-
+# C_WP_2 : C=15 -> traffic lost
+#          C=20 -> traffic lost
+#          C=25 -> traffic lost
 
 fig = plt.figure()
 font = {'family' : 'sans', 'size'   : 12}
