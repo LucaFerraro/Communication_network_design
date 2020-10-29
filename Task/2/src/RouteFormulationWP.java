@@ -3,7 +3,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.jom.DoubleMatrixND;
 import com.jom.OptimizationProblem;
 import com.net2plan.interfaces.networkDesign.Demand;
 import com.net2plan.interfaces.networkDesign.IAlgorithm;
@@ -15,13 +14,11 @@ import com.net2plan.libraries.GraphUtils;
 import com.net2plan.libraries.WDMUtils;
 import com.net2plan.utils.Constants.RoutingType;
 
-import cern.colt.function.tdouble.DoubleFunction;
-import cern.colt.matrix.tdouble.DoubleMatrix1D;
 import cern.colt.matrix.tdouble.DoubleMatrix2D;
 
 import com.net2plan.utils.Triple;
 
-public class RouteFormulationWP implements IAlgorithm
+public class RouteFormulationWP3 implements IAlgorithm
 {
 	
 	/** The method called by Net2Plan to run the algorithm (when the user presses the "Execute" button)
@@ -62,59 +59,11 @@ public class RouteFormulationWP implements IAlgorithm
 		/* add the vector of decision variables */
 		/* i-th coordinate in decision variables array, corresponds to the route of index i in the netPlan object */
 		op.addDecisionVariable("r_cnw" , isNonBifurcated , new int [] {D , netPlan.getNumberOfRoutes (),W } , 0 , Double.MAX_VALUE);  // fraction between 0 and 1
-		// MISSING (1)
 		op.addDecisionVariable("v_cw",false,new int[] {D,W},0,Double.MAX_VALUE);
 		
 		/* Set the objective function */
-		//op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
-		//op.setInputParameter("l_p", new DoubleMatrixND(new int [] { 1 , netPlan.getNumberOfRoutes (), 1 } , netPlan.getVectorRouteNumberOfLinks() ));
 		op.setInputParameter("l_p" , netPlan.getVectorRouteNumberOfLinks() , "row");
-		
-		// ADDED
-		//final DoubleMatrixND l_p = new DoubleMatrixND(new int [] { 1 , netPlan.getNumberOfRoutes () }, netPlan.getVectorRouteNumberOfLinks()  );
-		//l_p.assign((DoubleFunction) netPlan.getVectorRouteNumberOfLinks());
-		//final DoubleMatrix1D l_p = netPlan.getVectorRouteNumberOfLinks();
-		//l_p.reshape(1, netPlan.getNumberOfRoutes (), 1);
-		//op.setInputParameter("l_p" , l_p);	
-		//System.out.println (op.parseExpression("l_p(0,2,0)").evaluate());
-		
-		
-		// OBJECTIVE FUNCTION MISSING (2)
-		//  Size left matrix: [1, 138]. Size right matrix: [42, 138, 10]  <-> sum (l_p*r_cnw)
-		//op.setObjectiveFunction("minimize" , "sum (l_p*sum(sum(r_cnw,1),2))"); 
-		
-		//op.setObjectiveFunction("minimize" , "  sum(r_cnw)"); 
-		//op.setObjectiveFunction("minimize" , "sum(sum (l_p*permute(r_cnw,[2;1;3]),2),2)"); 
-		op.setObjectiveFunction("minimize" , "sum (l_p*permute(r_cnw,[2;1;3]))"); 
-		
-		
-		//System.out.println (op.parseExpression("[l_p(0,[all])]").evaluate());
-		//System.out.println (op.parseExpression("l_p[0;0;0][all]").evaluate());
-		//System.out.println (op.parseExpression("l_p(all, all)").evaluate());
-		
-		/*
-		for (Demand d : netPlan.getDemands ()) {
-			for(int w=0;w<W;w++) {
-				for (int n=0; n < netPlan.getNumberOfRoutes () ; n++) {
-				
-					op.setInputParameter ("c" , d.getIndex ());
-					op.setInputParameter ("w" , w);
-					op.setInputParameter ("n" , n);
-					
-					op.setObjectiveFunction("minimize" , "l_p(n)*r_cnw(c,n,w)");
-
-				}
-			}
-		}
-		*/
-		
-		
-		
-		
-		//op.setObjectiveFunction("minimize" , "sum (l_p.*sum(sum(r_cnw,3),1))"); 
-		//op.setObjectiveFunction("minimize" , "sum (sum(l_p*r_cnw),3)"); 
-		// sum(over w (sum(over c (sum(over n of P_n * r_cnw)))
-		
+		op.setObjectiveFunction("minimize" , "sum(l_p*permute(r_cnw,[2;1;3]))");
 		
 		/* Add the flow satisfaction constraints (all the traffic is carried) */
 		for (Demand d : netPlan.getDemands ())
@@ -123,12 +72,10 @@ public class RouteFormulationWP implements IAlgorithm
 			op.setInputParameter("V_c" , d.getOfferedTraffic());
 			op.setInputParameter ("c" , d.getIndex ());
 			for(int w=0;w<W;w++) {
-			    //// CONSTRAINT MISSING (3)
 				op.setInputParameter("w" , w);
-				op.addConstraint ("sum(r_cnw( c, all, w)) == v_cw(c,w)");
+				op.addConstraint ("sum(r_cnw(c,n,w),2)== v_cw(c,w)");
 			}
-		    //// CONSTRAINT MISSING (4)
-			op.addConstraint ("sum(v_cw(c,all)) == V_c");
+			op.addConstraint ("sum(v_cw(c,all))== V_c");
 		}
 
 		/* Add the link capacity constraints (all links carry less or equal traffic than its capacity) */
@@ -136,14 +83,14 @@ public class RouteFormulationWP implements IAlgorithm
 		{
 			op.setInputParameter("R_lk" , NetPlan.getIndexes(e.getTraversingRoutes()) , "row");
 			op.setInputParameter("linkcapacity" , e.getCapacity());
-		    //// CAPACITY CONSTRAINT MISSING (5)
+			
 			for(int w=0;w<W;w++) {
 				op.setInputParameter("w" , w);
-				
-				//op.setInputParameter("W" , W);
-				//op.addConstraint ("sum(r_cnw( all, R_lk, w)) <= linkcapacity/W");	
-				op.addConstraint ("sum(r_cnw( all, R_lk, w)) <= linkcapacity");
+				op.setInputParameter("W" , W);
+				op.addConstraint ("W*sum(sum(r_cnw(all,R_lk,w),2),1) <= linkcapacity");
 			}	
+			
+			
 		}
 
 		/* call the solver to solve the problem */
@@ -162,20 +109,18 @@ public class RouteFormulationWP implements IAlgorithm
 		// ADDED
 		System.out.println(netPlan.getVectorRouteNumberOfLinks());
 		
+		
 		for (Route r : netPlan.getRoutes())
 		{
 			int index=r.getIndex();
 			double traffic=0;
 			
-			for(Demand d : netPlan.getDemands ()) {
+			for(Demand d : netPlan.getDemands ())
 				for(int w=0;w<W;w++) {
-					traffic=traffic+r_cnw[d.getIndex()][index][w];
-					
-					// ADDED
-					if (r_cnw[d.getIndex()][index][w] > 0) {
-						System.out.println( "n: "+index+", c: " + (d.getIndex()) +", w: "+ w +", " + r_cnw[d.getIndex()][index][w]);
-					}
-					
+				traffic=traffic+r_cnw[d.getIndex()][index][w];
+				// ADDED
+				if (r_cnw[d.getIndex()][index][w] > 0) {
+					System.out.println( "n: "+index+", c: " + (d.getIndex()) +", w: "+ w +", " + r_cnw[d.getIndex()][index][w]);
 				}
 			}
 			r.setCarriedTraffic(traffic,traffic);	//insert traffic summing all demands in all wavelengths for that route
@@ -203,7 +148,7 @@ public class RouteFormulationWP implements IAlgorithm
 	{
 		final List<Triple<String, String, String>> param = new LinkedList<Triple<String, String, String>> ();
 		param.add (Triple.of ("k" , "10" , "Maximum number of loopless admissible paths per demand"));
-		param.add (Triple.of ("W" , "10" , "Number of wavelenghts per fiber"));
+		param.add (Triple.of ("W" , "10" , "Number of wavelenghts per fiber"));		
 		param.add (Triple.of ("isNonBifurcated" , "false" , "True if the traffic is constrained to be non-bifurcated"));
 		return param;
 	}
