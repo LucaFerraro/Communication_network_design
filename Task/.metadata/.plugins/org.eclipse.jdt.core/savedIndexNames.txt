@@ -1,0 +1,4 @@
+INDEX VERSION 1.130+/Users/lucaferraro/Desktop/PoliMi/Second_year/Communication_network_design/Communication_network_design_lab/Task/.metadata/.plugins/org.eclipse.jdt.core
+2601679634.index
+2188923391.index
+35334824.index
