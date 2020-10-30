@@ -18,7 +18,7 @@ import cern.colt.matrix.tdouble.DoubleMatrix2D;
 
 import com.net2plan.utils.Triple;
 
-public class RouteFormulationWP3 implements IAlgorithm
+public class RouteFormulationWP implements IAlgorithm
 {
 	
 	/** The method called by Net2Plan to run the algorithm (when the user presses the "Execute" button)
