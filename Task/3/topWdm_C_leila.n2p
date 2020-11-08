@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<network description="" name="" currentDate="1604503229284" currentPlotNodeLayout="" cache_definedPlotNodeLayouts="" version="6" nextElementId="42">
+	<node id="7" description="" name="Milano" xCoord="9.19277015038737" yCoord="45.46976071656585" mapLayout2NodeXYPositionMap=" 9.19277015038737 45.46976071656585" population="1352.0" isUp="true" layersWithIconsDefined="">
+		<attribute key="$$$Node_ATTNAME_OPTICALSWITCHTYPE" value="com.net2plan.niw.OadmArchitecture_generic"/>
+		<attribute key="$$$Node_type" value=""/>
+	</node>
+	<node id="8" description="" name="Genova" xCoord="8.934591435346233" yCoord="44.394533045524625" mapLayout2NodeXYPositionMap=" 8.934591435346233 44.394533045524625" population="583.0" isUp="true" layersWithIconsDefined="">
+		<attribute key="$$$Node_ATTNAME_OPTICALSWITCHTYPE" value="com.net2plan.niw.OadmArchitecture_generic"/>
+		<attribute key="$$$Node_type" value=""/>
+	</node>
+	<node id="9" description="" name="Roma" xCoord="12.49141522234916" yCoord="41.89614244423965" mapLayout2NodeXYPositionMap=" 12.49141522234916 41.89614244423965" population="2873.0" isUp="true" layersWithIconsDefined="">
+		<attribute key="$$$Node_ATTNAME_OPTICALSWITCHTYPE" value="com.net2plan.niw.OadmArchitecture_generic"/>
+		<attribute key="$$$Node_type" value=""/>
+	</node>
+	<node id="10" description="" name="Venezia" xCoord="12.370587068725776" yCoord="45.43315220469235" mapLayout2NodeXYPositionMap=" 12.370587068725776 45.43315220469235" population="269.0" isUp="true" layersWithIconsDefined="">
+		<attribute key="$$$Node_ATTNAME_OPTICALSWITCHTYPE" value="com.net2plan.niw.OadmArchitecture_generic"/>
+		<attribute key="$$$Node_type" value=""/>
+	</node>
+	<node id="22" description="" name="ANYCASTORIGIN," xCoord="0.0" yCoord="0.0" mapLayout2NodeXYPositionMap=" 0.0 0.0" population="0.0" isUp="true" layersWithIconsDefined="">
+		<tag value="$$$TAGNODE_INDICATIONVIRTUALORIGINNODE"/>
+	</node>
+	<node id="23" description="" name="ANYCASTDESTINATION," xCoord="0.0" yCoord="0.0" mapLayout2NodeXYPositionMap=" 0.0 0.0" population="0.0" isUp="true" layersWithIconsDefined="">
+		<tag value="$$$TAGNODE_INDICATIONVIRTUALDESTINATIONNODE"/>
+	</node>
+	<layer id="2" description="WDM" name="WDM" isDefaultLayer="false" linkCapacityUnitsName="" demandTrafficUnitsName="">
+		<link id="12" description="" name="Link-1" originNodeId="9" destinationNodeId="10" capacity="320.0" lengthInKm="393.4174693528036" bidirectionalPairId="13" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="13" description="" name="Link-2" originNodeId="10" destinationNodeId="9" capacity="320.0" lengthInKm="393.4174693528036" bidirectionalPairId="12" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="14" description="" name="Link-2" originNodeId="8" destinationNodeId="7" capacity="320.0" lengthInKm="121.27475942419942" bidirectionalPairId="15" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="15" description="" name="Link-3" originNodeId="7" destinationNodeId="8" capacity="320.0" lengthInKm="121.27475942419942" bidirectionalPairId="14" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="17" description="" name="Link-5" originNodeId="7" destinationNodeId="10" capacity="320.0" lengthInKm="247.90198997469884" bidirectionalPairId="18" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="18" description="" name="Link-6" originNodeId="10" destinationNodeId="7" capacity="320.0" lengthInKm="247.90198997469884" bidirectionalPairId="17" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="19" description="" name="Link-7" originNodeId="9" destinationNodeId="8" capacity="320.0" lengthInKm="400.48374744957937" bidirectionalPairId="20" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<link id="20" description="" name="Link-8" originNodeId="8" destinationNodeId="9" capacity="320.0" lengthInKm="400.48374744957937" bidirectionalPairId="19" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$Fiber_OpticalSlotRanges" value="0 319"/>
+		</link>
+		<sourceRouting>
+		</sourceRouting>
+		<hopByHopRouting>
+		</hopByHopRouting>
+	</layer>
+	<layer id="21" description="IP" name="IP" isDefaultLayer="true" linkCapacityUnitsName="" demandTrafficUnitsName="">
+		<link id="36" description="" name="Link-0" originNodeId="7" destinationNodeId="8" capacity="100.0" lengthInKm="1.0" bidirectionalPairId="37" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$IpLink_nominalCapacityGbps" value="100.0"/>
+		</link>
+		<link id="37" description="" name="Link-1" originNodeId="8" destinationNodeId="7" capacity="100.0" lengthInKm="1.0" bidirectionalPairId="36" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$IpLink_nominalCapacityGbps" value="100.0"/>
+		</link>
+		<link id="38" description="" name="Link-2" originNodeId="7" destinationNodeId="9" capacity="100.0" lengthInKm="1.0" bidirectionalPairId="39" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$IpLink_nominalCapacityGbps" value="100.0"/>
+		</link>
+		<link id="39" description="" name="Link-3" originNodeId="9" destinationNodeId="7" capacity="100.0" lengthInKm="1.0" bidirectionalPairId="38" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$IpLink_nominalCapacityGbps" value="100.0"/>
+		</link>
+		<link id="40" description="" name="Link-4" originNodeId="7" destinationNodeId="10" capacity="100.0" lengthInKm="1.0" bidirectionalPairId="41" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$IpLink_nominalCapacityGbps" value="100.0"/>
+		</link>
+		<link id="41" description="" name="Link-5" originNodeId="10" destinationNodeId="7" capacity="100.0" lengthInKm="1.0" bidirectionalPairId="40" nominalColor="-16777216" propagationSpeedInKmPerSecond="200000.0" isUp="true" monitoredOrForecastedTraffics="" trafficPredictor="">
+			<attribute key="$$$IpLink_nominalCapacityGbps" value="100.0"/>
+		</link>
+		<demand id="24" description="" name="Demand-0" ingressNodeId="8" egressNodeId="7" offeredTraffic="38.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="true"/>
+		</demand>
+		<demand id="25" description="" name="Demand-1" ingressNodeId="7" egressNodeId="8" offeredTraffic="89.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="false"/>
+		</demand>
+		<demand id="26" description="" name="Demand-2" ingressNodeId="9" egressNodeId="7" offeredTraffic="189.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="true"/>
+		</demand>
+		<demand id="27" description="" name="Demand-3" ingressNodeId="7" egressNodeId="9" offeredTraffic="89.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="false"/>
+		</demand>
+		<demand id="28" description="" name="Demand-4" ingressNodeId="9" egressNodeId="8" offeredTraffic="189.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="true"/>
+		</demand>
+		<demand id="29" description="" name="Demand-5" ingressNodeId="8" egressNodeId="9" offeredTraffic="38.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="false"/>
+		</demand>
+		<demand id="30" description="" name="Demand-6" ingressNodeId="10" egressNodeId="7" offeredTraffic="18.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="true"/>
+		</demand>
+		<demand id="31" description="" name="Demand-7" ingressNodeId="7" egressNodeId="10" offeredTraffic="89.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="false"/>
+		</demand>
+		<demand id="32" description="" name="Demand-8" ingressNodeId="10" egressNodeId="8" offeredTraffic="18.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="true"/>
+		</demand>
+		<demand id="33" description="" name="Demand-9" ingressNodeId="8" egressNodeId="10" offeredTraffic="38.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="false"/>
+		</demand>
+		<demand id="34" description="" name="Demand-10" ingressNodeId="10" egressNodeId="9" offeredTraffic="18.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="true"/>
+		</demand>
+		<demand id="35" description="" name="Demand-11" ingressNodeId="9" egressNodeId="10" offeredTraffic="189.0" intendedRecoveryType="NOTSPECIFIED" routingType="HOP_BY_HOP_ROUTING" bidirectionalPairId="-1" maximumAcceptableE2EWorstCaseLatencyInMs="-1.0" offeredTrafficGrowthFactorPerPeriodZeroIsNoGrowth="0.0" monitoredOrForecastedTraffics="" trafficPredictor="" qosType="">
+			<attribute key="$$$WAbstractIpUnicastOrAnycastDemand_isUpstream" value="false"/>
+		</demand>
+		<sourceRouting>
+		</sourceRouting>
+		<hopByHopRouting>
+		</hopByHopRouting>
+	</layer>
+</network>
